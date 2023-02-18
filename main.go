@@ -12,6 +12,8 @@ type Rsvp struct {
 	WillAttened bool
 }
 
+var responses = make([]*Rsvp, 0, 10)
+
 func main() {
 	fmt.Println("TO DO some features")
 }
