@@ -36,7 +36,7 @@ func welcomeHandler(writer http.ResponseWriter, request *http.Request) {
 }
 
 func listHandler(writer http.ResponseWriter, request *http.Request) {
-
+	templates["list"].Execute(writer, nil)
 }
 
 func main() {
@@ -44,4 +44,8 @@ func main() {
 
 	http.HandleFunc("/", welcomeHandler)
 	http.HandleFunc("/list", listHandler)
+	err := http.ListenAndServe(":5000", nil)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
