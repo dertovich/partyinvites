@@ -18,10 +18,10 @@ var responses = make([]*Rsvp, 0, 10)
 var templates = make(map[string]*template.Template, 3)
 
 func loadTemplates() {
-	templatesNames := [5]string{"welcome", "form", "thanks", "sorry", "list"}
+	templatesNames := [5]string{"html-templates/welcome", "html-templates/form", "html-templates/thanks", "html-templates/sorry", "html-templates/list"}
 
 	for index, name := range templatesNames {
-		t, err := template.ParseFiles("layout.html", name+".html")
+		t, err := template.ParseFiles("html-templates/layout.html", name+".html")
 		if err == nil {
 			templates[name] = t
 			fmt.Println("Loaded template", index, name)
@@ -32,11 +32,11 @@ func loadTemplates() {
 }
 
 func welcomeHandler(writer http.ResponseWriter, request *http.Request) {
-	templates["welcome"].Execute(writer, nil)
+	templates["html-templates/welcome"].Execute(writer, nil)
 }
 
 func listHandler(writer http.ResponseWriter, request *http.Request) {
-	templates["list"].Execute(writer, nil)
+	templates["html-templates/list"].Execute(writer, nil)
 }
 
 func main() {
