@@ -1,5 +1,5 @@
 # partyinvites
-html-templates contains html templates
+html-templates contains html templates    
 In main.go      
    * **loadTemplates** - Loads HTML templates        
    * **welcomeHandler** - Executes welcome page      
