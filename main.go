@@ -19,11 +19,6 @@ type formData struct {
 	Errors []string
 }
 
-type formData struct {
-	*Rsvp
-	Errors []string
-}
-
 var responses = make([]*Rsvp, 0, 10)
 var templates = make(map[string]*template.Template, 3)
 
@@ -47,6 +42,45 @@ func welcomeHandler(writer http.ResponseWriter, request *http.Request) {
 
 func listHandler(writer http.ResponseWriter, request *http.Request) {
 	templates["html-templates/list"].Execute(writer, nil)
+}
+
+func formHandler(writer http.ResponseWriter, request *http.Request) {
+	if request.Method == http.MethodGet {
+		templates["html-templates/form"].Execute(writer, formData{
+			Rsvp: &Rsvp{}, Errors: []string{},
+		})
+	} else if request.Method == http.MethodPost {
+		request.ParseForm()
+		responseData := Rsvp{
+			Name:       request.Form["name"][0],
+			Email:      request.Form["email"][0],
+			Phone:      request.Form["phone"][0],
+			WillAttend: request.Form["willattend"][0] == "true",
+		}
+
+		errors := []string{}
+		if responseData.Name == "" {
+			errors = append(errors, "Please enter your name")
+		}
+		if responseData.Email == "" {
+			errors = append(errors, "Please enter your email address")
+		}
+		if responseData.Phone == "" {
+			errors = append(errors, "Please enter your phone number")
+		}
+		if len(errors) > 0 {
+			templates["html-templates/form"].Execute(writer, formData{
+				Rsvp: &responseData, Errors: errors,
+			})
+		} else {
+			responses = append(responses, &responseData)
+			if responseData.WillAttend {
+				templates["html-templates/thanks"].Execute(writer, responseData.Name)
+			} else {
+				templates["html-templates/sorry"].Execute(writer, responseData.Name)
+			}
+		}
+	}
 }
 
 func main() {
