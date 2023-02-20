@@ -11,7 +11,7 @@ type Rsvp struct {
 	Email string
 	Phone string
 
-	WillAttened bool
+	WillAttend bool
 }
 
 type formData struct {
@@ -49,6 +49,22 @@ func formHandler(writer http.ResponseWriter, request *http.Request) {
 		templates["html-templates/form"].Execute(writer, formData{
 			Rsvp: &Rsvp{}, Errors: []string{},
 		})
+	} else if request.Method == http.MethodPost {
+		request.ParseForm()
+		responseData := Rsvp{
+			Name:       request.Form["name"][0],
+			Email:      request.Form["email"][0],
+			Phone:      request.Form["phone"][0],
+			WillAttend: request.Form["willattend"][0] == "true",
+		}
+
+		responses = append(responses, &responseData)
+
+		if responseData.WillAttend {
+			templates["html-templates/thanks"].Execute(writer, responseData.Name)
+		} else {
+			templates["html-templates/sorry"].Execute(writer, responseData.Name)
+		}
 	}
 }
 
