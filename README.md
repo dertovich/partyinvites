@@ -1,9 +1,9 @@
 # partyinvites
 html-templates contains html templates    
 In **main.go**
-    * **loadTemplates** - Loads HTML templates
-    * **welcomeHandler** - Executes welcome page
-    * **listHandler** - Executes guest list page
+    * **loadTemplates** - Loads HTML templates  
+    * **welcomeHandler** - Executes welcome page   
+    * **listHandler** - Executes guest list page   
     * **formHandler** - Processes the form and checks the data entered    
 ### Example
 Form to fill out
